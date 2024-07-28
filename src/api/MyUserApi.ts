@@ -7,7 +7,7 @@ const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const useGetMyUser = () => {
   const { getAccessTokenSilently } = useAuth0();
-  const getMyUser = async ():Promise<IUser> => {
+  const getMyUser = async (): Promise<IUser> => {
     const accessToken = await getAccessTokenSilently();
     const res = await fetch(`${baseUrl}/api/my/user`, {
       method: "GET",
@@ -21,7 +21,7 @@ const useGetMyUser = () => {
       throw new Error("Error: falid to get My Profile User..!");
     }
 
-    return res.json()
+    return res.json();
   };
   const {
     isSuccess,
@@ -29,7 +29,7 @@ const useGetMyUser = () => {
     data: user,
   } = useQuery("fetchCurrentUser", getMyUser);
 
-  return {isSuccess , isError , user}
+  return { isSuccess, isError, user };
 };
 
 type TCreateUser = {
@@ -77,6 +77,7 @@ const useUpdateMyUser = () => {
 
   const updateUser = async (body: updateUser) => {
     const token = await getAccessTokenSilently();
+    console.log("token", token);
     const res = await fetch(`${baseUrl}/api/my/user`, {
       method: "PATCH",
       headers: {
@@ -106,7 +107,8 @@ const useUpdateMyUser = () => {
   }
 
   if (error) {
-    toast.error(error.toString());
+    const handleError = isError && "Error:Something went be wrong..!";
+    toast.error(handleError);
     reset();
   }
 

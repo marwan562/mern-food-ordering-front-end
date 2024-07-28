@@ -13,12 +13,13 @@ import { Button } from "./ui/button";
 
 const UserAvatarMenu = () => {
   const { user, logout } = useAuth0();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar>
-          <AvatarImage src={user?.picture} />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarImage src={user?.picture} alt={user?.name} />
+          <AvatarFallback>{user?.name?.[0]}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
@@ -34,9 +35,17 @@ const UserAvatarMenu = () => {
             Order Status
           </Link>
         </DropdownMenuItem>
-        <Button onClick={() => logout()} className=" w-full mt-2">
-          Log out
-        </Button>
+        <DropdownMenuItem>
+          <Link to="/manage-restaurant" className="font-bold hover:text-orange-500">
+            Manage Restaurant
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem >
+          <Button onClick={() => logout()} className="w-full mt-2">
+            Log out
+          </Button>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
