@@ -20,7 +20,7 @@ type TProps = {
 };
 
 const defaultCreateRestaurant = {
-  cuisines: ["Italian", "Burgers"],
+  cuisines: [],
   menuItems: [{ name: "", price: 0 }],
 };
 
@@ -30,12 +30,10 @@ const ManageRestaurantForm = ({ defaultValues, isLoading, onSave }: TProps) => {
     defaultValues: defaultCreateRestaurant,
   });
 
-
-
   const onsubmit = (valuesForm: TManageRestaurantForm) => {
     const formData = new FormData();
     console.log("Form Values:", valuesForm); // Log form values
-  
+
     formData.append("restaurantName", valuesForm.restaurantName);
     formData.append("city", valuesForm.city);
     formData.append("country", valuesForm.country);
@@ -44,24 +42,22 @@ const ManageRestaurantForm = ({ defaultValues, isLoading, onSave }: TProps) => {
       "estimatedDeliveryTime",
       valuesForm.estimatedDeliveryTime.toString()
     );
-  
+
     valuesForm.cuisines.forEach((value, index) => {
       formData.append(`cuisines[${index}]`, value);
     });
-  
+
     valuesForm.menuItems.forEach((value, index) => {
       formData.append(`menuItems[${index}][name]`, value.name);
       formData.append(`menuItems[${index}][price]`, value.price.toString());
     });
-  
+
     if (valuesForm.imageFile) {
       formData.append("imageFile", valuesForm.imageFile);
     }
-  
-  
+
     onSave(formData);
   };
-  
 
   useEffect(() => {
     if (!defaultValues) {

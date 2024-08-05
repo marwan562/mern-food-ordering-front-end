@@ -1,45 +1,76 @@
-import ProtectedRoute from "@/components/ProtectedRoute";
-import MainLayout from "@/layouts/MainLayout";
-import AuthCallbackPage from "@/pages/AuthCallbackPage";
-import HomePage from "@/pages/HomePage";
-import MyRestaurantPage from "@/pages/MyRestaurantPage";
-import UserProfile from "@/pages/UserProfile";
+import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
+
+// Protected Route
+import ProtectedRoute from "@/components/ProtectedRoute";
+
+// Main layout
+import MainLayout from "@/layouts/MainLayout";
+import LottileFiles from "@/assets/lottieFiles/LottieFiles";
+import OrderStatusPage from "@/pages/OrderStatusPage";
+
+// Pages
+const HomePage = lazy(() => import("@/pages/HomePage"));
+const UserProfile = lazy(() => import("@/pages/UserProfile"));
+const SearchPage = lazy(() => import("@/pages/SearchPage"));
+const AuthCallbackPage = lazy(() => import("@/pages/AuthCallbackPage"));
+const MyRestaurantPage = lazy(() => import("@/pages/MyRestaurantPage"));
+const DetailsRestaurant = lazy(() => import("@/pages/DetailsRestaurant"));
 
 const AppRouter = () => {
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <MainLayout showHero>
-            <HomePage />
-          </MainLayout>
-        }
-      />
-      {/* Protected Routes  */}
-      <Route element={<ProtectedRoute />}>
+    <Suspense fallback={<LottileFiles variant="LoadingPage" />}>
+      <Routes>
         <Route
-          path="/user-profile"
+          path="/"
           element={
-            <MainLayout>
-              <UserProfile />
+            <MainLayout showHero>
+              <HomePage />
             </MainLayout>
           }
         />
         <Route
-          path="/manage-restaurant"
+          path="/search/:city"
           element={
             <MainLayout>
-              <MyRestaurantPage />
+              <SearchPage />
             </MainLayout>
           }
         />
-      </Route>
+        <Route
+          path="/details/:id"
+          element={
+            <MainLayout>
+              <DetailsRestaurant />
+            </MainLayout>
+          }
+        />
 
-      <Route path="/auth-callback" element={<AuthCallbackPage />} />
-      {/* <Route path="*" element={<PageNotFound/>} /> */}
-    </Routes>
+        {/* Protected Routes  */}
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="/user-profile"
+            element={
+              <MainLayout>
+                <UserProfile />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/manage-restaurant"
+            element={
+              <MainLayout>
+                <MyRestaurantPage />
+              </MainLayout>
+            }
+          />
+          <Route path="/order-status" element={<MainLayout ><OrderStatusPage/></MainLayout>}/>
+        </Route>
+
+        <Route path="/auth-callback" element={<AuthCallbackPage />} />
+        {/* <Route path="*" element={<PageNotFound/>} /> */}
+      </Routes>
+    </Suspense>
   );
 };
 

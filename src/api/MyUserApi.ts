@@ -26,10 +26,11 @@ const useGetMyUser = () => {
   const {
     isSuccess,
     isError,
+    isLoading,
     data: user,
   } = useQuery("fetchCurrentUser", getMyUser);
 
-  return { isSuccess, isError, user };
+  return { isSuccess, isLoading, isError, user };
 };
 
 type TCreateUser = {

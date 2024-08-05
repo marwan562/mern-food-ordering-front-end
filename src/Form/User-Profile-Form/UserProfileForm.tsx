@@ -14,17 +14,22 @@ import {
 } from "@/validations/userUpdateSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import LoadingButton from "@/components/LoadingButton";
 import { IUser } from "@/types";
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 
 type TProps = {
   onSave: (userProfileForm: TUserProfileForm) => void;
-  defaultValues: IUser | undefined;
-  isLoading: boolean;
+  defaultValues?: IUser;
+  buttonConfirm: ReactNode;
+  title: string;
 };
 
-const UserProfileForm = ({ onSave, isLoading, defaultValues }: TProps) => {
+const UserProfileForm = ({
+  onSave,
+  title,
+  buttonConfirm,
+  defaultValues,
+}: TProps) => {
   const form = useForm<TUserProfileForm>({
     resolver: zodResolver(userProfileSchema),
     defaultValues,
@@ -40,7 +45,7 @@ const UserProfileForm = ({ onSave, isLoading, defaultValues }: TProps) => {
         className="space-y-4 bg-gray-50 rounded-lg md:p-10"
       >
         <div>
-          <h2 className="text-2xl font-bold">User Profile</h2>
+          <h2 className="text-2xl font-bold">{title}</h2>
           <FormDescription>
             View and change your profile information here
           </FormDescription>
@@ -113,8 +118,7 @@ const UserProfileForm = ({ onSave, isLoading, defaultValues }: TProps) => {
             )}
           />
         </div>
-
-        <LoadingButton isLoading={isLoading}> Submit</LoadingButton>
+        {buttonConfirm}
       </form>
     </Form>
   );
