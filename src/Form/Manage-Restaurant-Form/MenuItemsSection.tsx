@@ -1,9 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  FormDescription,
-  FormField,
-  FormItem,
-} from "@/components/ui/form";
+import { FormDescription, FormField, FormItem } from "@/components/ui/form";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import MenuItemInput from "./MenuItemFields";
 
@@ -38,11 +34,11 @@ const MenuSection = () => {
                 removeMenuItem={() => remove(index)}
               />
             ))}
-            {errors.menuItems?.root?.message &&(
+            {errors.menuItems?.root?.message && (
               <div className=" text-[0.8rem] font-medium text-red-500">
                 {generalErrorMessage}
               </div>
-            ) }
+            )}
           </FormItem>
         )}
       />
