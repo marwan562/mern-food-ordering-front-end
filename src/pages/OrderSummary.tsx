@@ -2,7 +2,6 @@ import { useCreateCheckoutSession } from "@/api/OrderApi";
 import ButtonCheckOut from "@/components/ButtonCheckOut";
 import { Badge } from "@/components/ui/badge";
 import { IRestaurant } from "@/types";
-import { TUserProfileForm } from "@/validations/userUpdateSchema";
 import { Trash } from "lucide-react";
 import { toast } from "sonner";
 
@@ -12,7 +11,7 @@ type TCreateCheckOutRequest = {
     _id: string;
     name: string;
     price: number;
-    quantity: number; // Ensure quantity is a number
+    quantity: string; 
   }[];
   deliveryDetails: {
     email?: string;
@@ -45,23 +44,31 @@ const OrderSummary = ({
     return totalPrice + item.price * item.quantity;
   }, detailsRestaurant?.deliveryPrice ?? 0);
   
-  const onCheckout = async (FormUserProfile: TUserProfileForm) => {
+  const onCheckout = async (FormUserProfile: {
+    name: string;
+    city: string;
+    addressLine1: string;
+    country: string;
+    email?: string;
+  }) => {
     if (!detailsRestaurant || !cartItems) {
       toast.error("Something went wrong!");
       return;
     }
 
+   
     // Ensure quantity is a number
     const formattedCartItems = cartItems.map((item) => ({
       ...item,
-      quantity: Number(item.quantity), // Convert to number if necessary
+      quantity: item.quantity.toString(), // Convert quantity to string
     }));
 
-    const data: TCreateCheckOutRequest = {
+      const data: TCreateCheckOutRequest = {
       restaurantId: detailsRestaurant._id,
       deliveryDetails: FormUserProfile,
       menuItems: formattedCartItems,
     };
+
 
     try {
       const response = await createSession(data);
