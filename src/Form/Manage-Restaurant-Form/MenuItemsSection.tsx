@@ -17,7 +17,7 @@ const MenuSection = () => {
     name: "menuItems",
   });
 
-  const generalErrorMessage = errors.menuItems?.root?.message;
+  const generalErrorMessage = errors.menuItems?.message as string | undefined;
 
   return (
     <div className="space-y-2">
