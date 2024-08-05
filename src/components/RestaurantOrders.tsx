@@ -76,7 +76,7 @@ const RestaurantOrders = ({
                     <Receipt className="mr-2" />
                     Total:
                   </h2>
-                  <p>${order.totalAmount.toFixed(2)}</p>
+                  <p>${order.totalAmount?.toFixed(2)}</p>
                 </div>
               </div>
               <div className="mb-4">
