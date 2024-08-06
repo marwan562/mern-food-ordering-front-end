@@ -2,9 +2,11 @@ import { useGetMyOrders } from "@/api/OrderApi";
 import LottieFiles from "@/assets/lottieFiles/LottieFiles";
 import FilterOrderStatus from "@/components/FilterOrderStatus";
 import OrderStatusList from "@/components/OrderStatusList";
+import PaymentSuccessfully from "@/components/PaymentSuccessfully";
 import SortOrderStatus from "@/components/SortOrderStatus";
 import { TStatus } from "@/types";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 type TSortOrder = "lastCreated" | "oldCreated";
 
@@ -14,16 +16,26 @@ type TFilterOrder = {
 };
 
 const OrderStatusPage = () => {
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const success = params.get('success') === 'true';
+
+
+
   const [filterOrder, setFilterOrder] = useState<TFilterOrder>({
     selectedStatus: [],
     sortOrder: "lastCreated",
   });
+  
 
   const { data, isLoading } = useGetMyOrders({
     sortOrder: filterOrder.sortOrder,
     selectedStatus: filterOrder.selectedStatus,
   });
 
+  if (success) {
+    return <PaymentSuccessfully/>
+  }
   const onToggelStatus = (status: TStatus) => {
     setFilterOrder((prev) => ({
       ...prev,
@@ -45,13 +57,15 @@ const OrderStatusPage = () => {
       />
       <div className="flex flex-col gap-5">
         <div className="flex flex-row items-center justify-between">
-          <div className=" text-orange-500 text-2xl font-bold">{data?.length} Orders Found. </div>
+          <div className=" text-orange-500 text-2xl font-bold">
+            {data?.length} Orders Found.{" "}
+          </div>
           <SortOrderStatus
             sortOrderStatus={filterOrder.sortOrder}
             setSortOrderStatus={setSortOrderStatus}
           />
         </div>
-        {isLoading && <LottieFiles variant={"Loading"}  />}
+        {isLoading && <LottieFiles variant={"Loading"} />}
         {data && data?.length > 0 ? (
           data?.map((el, i) => <OrderStatusList key={i} {...el} />)
         ) : (

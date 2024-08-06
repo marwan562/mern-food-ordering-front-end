@@ -1,12 +1,14 @@
 import Lottie from "lottie-react";
 import LoadingPage from "./LoadingPage.json";
 import NotFoundSearch from "./NotFoundSearch.json";
+import PaymentSuccessfully from "./PaymentSuccessfully.json";
 import Loading from "./Loading.json";
 
 const LottilesFiels = {
   LoadingPage,
   Loading,
   NotFoundSearch,
+  PaymentSuccessfully
 };
 
 type TProps = {
